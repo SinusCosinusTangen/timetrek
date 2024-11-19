@@ -7,7 +7,8 @@ export const PASSWORDREGEX_UPPER_LOWER = /(?=.*[a-z])(?=.*[A-Z])/;
 export const PASSWORDREGEX_SPECIAL_CHAR = /(?=.*[-!@#$%^&*(),.?":{}|<>])/;
 
 export enum DBProps {
-    Project = "projects",
+    Pages = "pages",
     User = "users",
     Task = "tasks",
+    Stages = "stages",
 }

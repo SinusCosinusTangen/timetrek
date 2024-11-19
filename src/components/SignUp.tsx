@@ -53,7 +53,6 @@ const SignUp = () => {
 
                 if (user.email) {
                     const existingUser = await getUserByUid(user.uid);
-                    console.log(existingUser);
 
                     if (!existingUser) {
                         await registerUser(user.uid, name, user.email);
@@ -86,19 +85,16 @@ const SignUp = () => {
             .then(async (userCredential) => {
                 const user = userCredential.user;
 
-                console.log(user.email);
-
                 if (user.uid && user.email) {
                     const accessToken = await user.getIdToken();
                     const refreshToken = user.refreshToken;
-                    let expires = new Date()
-                    expires.setTime(expires.getTime() + (60 * 60 * 1000))
+                    let expires = new Date();
+                    expires.setTime(expires.getTime() + (60 * 60 * 1000));
 
-                    setCookies("access_token", accessToken, { expires })
-                    setCookies("refresh_token", refreshToken, { expires })
+                    setCookies("access_token", accessToken, { expires });
+                    setCookies("refresh_token", refreshToken, { expires });
 
                     const existingUser = await getUserByUid(user.uid);
-                    console.log(existingUser);
 
                     if (!existingUser) {
                         registerUser(user.uid, user.displayName, user.email);
@@ -110,7 +106,7 @@ const SignUp = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorMessage)
+                console.error(errorMessage)
 
                 if (errorCode === "auth/invalid-credential") {
                     dispatch(showAlert({ message: 'Email or password is invalid!', type: 'error', action: () => { } }));

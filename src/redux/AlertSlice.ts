@@ -11,14 +11,14 @@ const initialState: AlertState = {
     message: '',
     type: 'info',
     visible: false,
-    action: () => { },
+    action: null,
 };
 
 const alertSlice = createSlice({
     name: 'alert',
     initialState,
     reducers: {
-        showAlert: (state, action: PayloadAction<{ message: string; type: AlertState['type']; action: any }>) => {
+        showAlert: (state, action: PayloadAction<{ message: string; type: AlertState['type']; action?: any }>) => {
             state.message = action.payload.message;
             state.type = action.payload.type;
             state.visible = true;

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import alertReducer from './AlertSlice';
+import taskReducer from './TaskSlice'
 
 export const store = configureStore({
     reducer: {
         alert: alertReducer,
+        task: taskReducer,
     },
 });
 

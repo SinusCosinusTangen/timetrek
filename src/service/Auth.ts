@@ -3,13 +3,14 @@ import { db } from "../config/Firebase"
 import User from "../model/User"
 import { DBProps } from "../constant/Constant"
 
-const registerUser = async (uid: string, name: string | null, email: string) => {
+const registerUser = async (uid: string, name: string | null, email: string, photoUrl?: string) => {
     try {
         const newUser: User = {
             Id: uid,
             Name: name ?? "User",
             Email: email,
-            LastLoggedIn: new Date()
+            LastLoggedIn: new Date(),
+            PhotoUrl: photoUrl
         };
 
         const result = await addDoc(collection(db, DBProps.User), newUser);
@@ -39,7 +40,8 @@ const getUserByUid = async (uid: string): Promise<User | null | undefined> => {
             Id: userData.Id,
             Name: userData.Name,
             Email: userData.Email,
-            LastLoggedIn: userData.LastLoggedIn
+            LastLoggedIn: userData.LastLoggedIn,
+            PhotoUrl: userData.PhotoUrl
         }
 
         return user;

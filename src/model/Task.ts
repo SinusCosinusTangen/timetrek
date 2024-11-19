@@ -1,16 +1,14 @@
-import Project from "./Project";
-import User from "./User";
-
 interface Task {
-    Id: string;
-    Project: string;
-    Asignee: string;
+    Id?: string;
+    Page: string;
+    Assignee: string;
     Name: string;
+    Stage: number;
     StartDateTime: Date;
     TargetDateTime: Date;
     EndDateTime: Date;
     TimeCounter: number;
-    NotifiedMembers: User[];
+    NotifiedMembers: string[];
 }
 
 export default Task;
