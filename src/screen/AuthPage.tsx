@@ -1,12 +1,37 @@
 import SignUp from "../components/SignUp";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SIGNIN, SIGNUP } from "../constant/Constant";
 import SignIn from "../components/SignIn";
-import img from "../asset/img/5243321.png"
+import img from "../asset/img/5243321.png";
+import { auth } from "../config/Firebase";
+import { getUserByUid } from "../service/Auth";
+import { useNavigate } from "react-router-dom";
+import User from "../model/User";
 
 const AuthPage = () => {
-
+    const navigate = useNavigate();
     const [authForm, setAuthForm] = useState(SIGNIN);
+    const [user, setUser] = useState<User>();
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
+            if (currentUser?.uid) {
+                const user = await getUserByUid(currentUser?.uid);
+
+                if (user) {
+                    if (currentUser.photoURL) {
+                        user.PhotoUrl = currentUser.photoURL;
+                    }
+                    setUser(user);
+                }
+            }
+            if (currentUser) {
+                navigate("/");
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     return (
         <div className="flex">

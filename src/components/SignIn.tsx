@@ -51,7 +51,7 @@ const SignIn = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorMessage)
+                console.error(error)
 
                 if (errorCode === "auth/invalid-credential") {
                     dispatch(showAlert({ message: 'Email or password is invalid!', type: 'error', action: () => { } }));
@@ -65,8 +65,6 @@ const SignIn = () => {
             .then(async (userCredential) => {
                 const user = userCredential.user;
 
-                console.log(user.email);
-
                 if (user.uid && user.email) {
                     const accessToken = await user.getIdToken();
                     const refreshToken = user.refreshToken;
@@ -77,7 +75,6 @@ const SignIn = () => {
                     setCookies("refresh_token", refreshToken, { expires })
 
                     const existingUser = await getUserByUid(user.uid);
-                    console.log(existingUser);
 
                     if (!existingUser) {
                         registerUser(user.uid, user.displayName, user.email);
@@ -89,7 +86,7 @@ const SignIn = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorMessage)
+                console.error(errorMessage)
 
                 if (errorCode === "auth/invalid-credential") {
                     dispatch(showAlert({ message: 'Email or password is invalid!', type: 'error', action: () => { } }));
