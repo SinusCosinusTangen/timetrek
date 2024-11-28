@@ -8,7 +8,7 @@ import Task from "../model/Task";
 
 const addPage = async (uid: string, name: string, user: User) => {
     try {
-        const defaultStages: Stage[] = [{ Step: 1, Name: "Ready to Start", Task: [] }, { Step: 2, Name: "On Progress", Task: [] }, { Step: 3, Name: "Done", Task: [] }]
+        const defaultStages: Stage[] = [{ Step: 1, Name: "Ready to Start" }, { Step: 2, Name: "On Progress" }, { Step: 3, Name: "Done" }]
         const newMember: string[] = [user.Id];
         const newPage: Page = {
             Owner: uid,
@@ -40,8 +40,7 @@ const addStage = async (pageId: string, name: string) => {
         if (pageSnap && pageData) {
             const newStage: Stage = {
                 Name: name,
-                Step: pageData.TotalStage + 1,
-                Task: []
+                Step: pageData.TotalStage + 1
             }
             const stages: Stage[] = pageData.Stages;
             stages.push(newStage);
@@ -145,11 +144,14 @@ const getTasksByPageId = async (pageId: string) => {
                     Stage: data.Stage,
                     Assignee: data.Assignee,
                     Stages: data.Stages,
+                    Order: data.Order,
                     StartDateTime: data.StartDateTime.toDate(),
                     TargetDateTime: data.TargetDateTime.toDate(),
                     EndDateTime: data.EndDateTime.toDate(),
-                    TimeCounter: data.TimeCounter,
-                    NotifiedMembers: data.NotifiedMembers
+                    EndedTime: data.EndedTime ? data.EndedTime.toDate() : null,
+                    NotifiedMembers: data.NotifiedMembers,
+                    CreatedAt: data.CreatedAt.toDate(),
+                    UpdatedAt: data.UpdatedAt.toDate()
                 };
             });
             return taskList;

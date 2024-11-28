@@ -7,8 +7,10 @@ interface Task {
     StartDateTime: Date;
     TargetDateTime: Date;
     EndDateTime: Date;
-    TimeCounter: number;
+    EndedTime: Date | null;
     NotifiedMembers: string[];
+    CreatedAt: Date;
+    UpdatedAt: Date;
 }
 
 export default Task;

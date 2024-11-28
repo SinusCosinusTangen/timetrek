@@ -67,7 +67,7 @@ const Navbar: React.FC<NavbarProps> = ({ name, email, profilePic }) => {
                         <p>{name}</p>
                         <p>{email}</p>
                     </div>
-                    <img src={profilePic} className="rounded-full border-2 border-black h-10 w-10 ml-2" />
+                    <img src={profilePic} className="rounded-full border border-black h-10 w-10 ml-2" />
                 </button>
                 {isMenuOpen && (
                     <div className="absolute z-50 right-4 mt-12 w-48 bg-white border-t-2 border border-gray-200 shadow-lg">
