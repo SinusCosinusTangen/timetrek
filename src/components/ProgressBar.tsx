@@ -4,7 +4,6 @@ interface ProgressBarProps {
     startDateTime: number;
     targetDateTime: number;
     endDateTime: number;
-    // progress: number;
     className?: string;
     endedTime?: number;
 }

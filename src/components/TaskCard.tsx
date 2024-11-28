@@ -26,12 +26,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         fetchAssignee();
     }, [task.Assignee]);
 
-    if (task.Name === "Task 9") {
-        console.log(task.StartDateTime);
-        console.log(task.TargetDateTime);
-        console.log(task.EndDateTime);
-    }
-
     return (
         <div key={task.Id} className="w-full border-2 bg-white rounded-md p-2">
             <h1 className="text-lg font-semibold">{task.Name}</h1>
