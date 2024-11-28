@@ -35,7 +35,7 @@ const AuthPage = () => {
 
     return (
         <div className="flex">
-            <div className="flex-auto h-screen w-3/5 px-52 flex flex-col">
+            <div className="flex-auto h-screen w-3/5 sm:px-20 md:px-52 flex flex-col">
                 <div className="flex-grow flex items-center">
                     <div className="w-full">
                         <h1 className="text-4xl text-center">Welcome to TimeTrek</h1>

@@ -79,9 +79,10 @@ const LandingPage = () => {
                     {!isMinimized && (
                         <div id="project-pane" className="flex flex-col bg-zinc-100 items-center w-1/5 h-full border-r-2 border-slate-400">
                             <button
-                                className="flex w-full p-2 font-semibold text-lg"
+                                className="flex w-full p-2 font-semibold text-2xl px-4 justify-between"
                                 onClick={() => setIsMinimized(prev => !prev)}
                             >
+                                <h1>Pages</h1>
                                 &times;
                             </button>
                             <div className="flex flex-col w-full px-4 py-4 mb-4 gap-4 overflow-y-auto">

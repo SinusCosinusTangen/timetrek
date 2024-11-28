@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../redux/Store";
 import { hideTaskForm } from "../redux/TaskSlice";
-import { addNewTask } from "../service/TaskService";
+import { addNewTask, getTasksByPageIdAndStage } from "../service/TaskService";
 import User from "../model/User";
 import Task from "../model/Task";
 
@@ -67,8 +67,10 @@ const AddTaskForm: React.FC = () => {
             StartDateTime: new Date(startDateTime),
             TargetDateTime: new Date(targetDateTime),
             EndDateTime: new Date(endDateTime),
-            TimeCounter: 0,
-            NotifiedMembers: notifiedMember
+            EndedTime: null,
+            NotifiedMembers: notifiedMember,
+            CreatedAt: new Date(),
+            UpdatedAt: new Date()
         }
         await addNewTask(task);
         onClose();

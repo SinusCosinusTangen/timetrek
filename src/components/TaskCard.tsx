@@ -1,47 +1,50 @@
 import Task from "../model/Task";
-import { useState, useEffect } from "react";
+import User from "../model/User";
+import { getUserByUid } from "../service/Auth";
 import ProgressBar from "./ProgressBar";
+import { useState, useEffect } from "react";
 
 interface TaskCardProps {
     task: Task;
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
-    const [progress, setProgress] = useState(0);
-    const [currentTime, setCurrentTime] = useState(new Date());
+    const [assignee, setAssignee] = useState<User | null>();
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 1000);
-
-        return () => {
-            clearInterval(intervalId);
+        const fetchAssignee = async () => {
+            try {
+                const user = await getUserByUid(task.Assignee);
+                if (user) {
+                    setAssignee(user);
+                }
+            } catch (error) {
+                console.error("Error fetching user:", error);
+            }
         };
-    }, []);
 
-    useEffect(() => {
-        const totalDuration = task.TargetDateTime.getTime() - task.StartDateTime.getTime();
-        const elapsedTime = currentTime.getTime() - task.StartDateTime.getTime();
-        const progressValue = Math.min(Math.max(elapsedTime, 0), totalDuration);
+        fetchAssignee();
+    }, [task.Assignee]);
 
-        setProgress(progressValue);
-
-    }, [currentTime, task]);
-
-    const totalDurationInHours = (new Date(task.TargetDateTime).getTime() - new Date(task.StartDateTime).getTime()) / (1000 * 60 * 60); // Total duration in hours
+    if (task.Name === "Task 9") {
+        console.log(task.StartDateTime);
+        console.log(task.TargetDateTime);
+        console.log(task.EndDateTime);
+    }
 
     return (
         <div key={task.Id} className="w-full border-2 bg-white rounded-md p-2">
-            {task.Name}
-            <ProgressBar className="my-2" progress={((currentTime.getTime() - task.StartDateTime.getTime()) / (task.TargetDateTime.getTime() - task.StartDateTime.getTime())) * 100} />
-            <ProgressBar className="my-2" progress={((currentTime.getTime() - task.StartDateTime.getTime()) / (task.EndDateTime.getTime() - task.StartDateTime.getTime())) * 100} />
-            <div>
-                Progress: {((progress / (task.TargetDateTime.getTime() - task.StartDateTime.getTime())) * 100).toFixed(2)}%
+            <h1 className="text-lg font-semibold">{task.Name}</h1>
+            <div className="flex bg-gray-200 w-fit p-1 px-2 rounded-lg mt-2">
+                <img src={assignee?.PhotoUrl} className="rounded-full border border-black h-5 w-5 my-auto" />
+                <span className="ml-1">{assignee?.Name}</span>
             </div>
-            <div>
-                Duration: {totalDurationInHours.toFixed(2)} hours
-            </div>
+            <ProgressBar
+                className="w-full mt-2"
+                startDateTime={task.StartDateTime.getTime()}
+                targetDateTime={task.TargetDateTime.getTime()}
+                endDateTime={task.EndDateTime.getTime()}
+            />
         </div>
     );
 }
