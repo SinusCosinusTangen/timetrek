@@ -2,15 +2,25 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/Store';
 import { hideAlert } from '../redux/AlertSlice';
-import { tick, times } from 'react-icons-kit/typicons';
+import { tick, times, info } from 'react-icons-kit/typicons';
 import Icon from 'react-icons-kit';
 
 const Alert: React.FC = () => {
     const { message, type, visible, action } = useSelector((state: RootState) => state.alert);
     const dispatch = useDispatch<AppDispatch>();
-    const icon = type === "error" ? times : tick;
-    const iconClass = type === "error" ? "text-pink-600" : "text-green-600";
-    const colorClass = type === "error" ? "border-pink-600 bg-pink-100/50 shadow-pink-500/30" : "border-green-600 bg-green-100/50 shadow-green-500/30"
+    var icon = info;
+    var iconClass = "text-blue-600";
+    var colorClass = "border-blue-600 bg-blue-100/50 shadow-blue-500/30";
+
+    if (type === "success") {
+        icon = tick;
+        iconClass = "text-green-600";
+        colorClass = "border-green-600 bg-green-100/50 shadow-green-500/30";
+    } else if (type === "error") {
+        icon = times;
+        iconClass = "text-pink-600"
+        colorClass = "border-pink-600 bg-pink-100/50 shadow-pink-500/30";
+    }
 
     if (!visible) return null;
 
@@ -27,7 +37,7 @@ const Alert: React.FC = () => {
                     <div className="w-full flex justify-center">
                         <button
                             className="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg py-2 px-5 hover:bg-blue-700 hover:shadow-lg active:scale-95 transition-transform"
-                            onClick={() => { dispatch(hideAlert()); action(); }}
+                            onClick={() => { dispatch(hideAlert()); if (action != null) action() }}
                         >
                             OK
                         </button>

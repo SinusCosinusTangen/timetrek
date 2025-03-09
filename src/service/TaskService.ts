@@ -64,6 +64,7 @@ const getTasksByPageIdAndStage = async (pageId: string, stage: number) => {
                     EndDateTime: data.EndDateTime.toDate(),
                     EndedTime: data.EndedTime ? data.EndedTime.toDate() : null,
                     NotifiedMembers: data.NotifiedMembers,
+                    Position: data.Position,
                     CreatedAt: data.CreatedAt.toDate(),
                     UpdatedAt: data.UpdatedAt.toDate()
                 };

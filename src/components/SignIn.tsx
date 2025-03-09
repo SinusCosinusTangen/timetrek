@@ -33,7 +33,7 @@ const SignIn = () => {
             .then(async (userCredential) => {
                 const user = userCredential.user;
                 if (!user.emailVerified) {
-                    dispatch(showAlert({ message: "Please verify your email, link has been sent to your email", type: "error", action: () => { } }));
+                    dispatch(showAlert({ message: "Please verify your email, link has been sent to your email", type: "error" }));
                     signOut(auth);
                 }
 
@@ -54,7 +54,7 @@ const SignIn = () => {
                 console.error(error)
 
                 if (errorCode === "auth/invalid-credential") {
-                    dispatch(showAlert({ message: 'Email or password is invalid!', type: 'error', action: () => { } }));
+                    dispatch(showAlert({ message: 'Email or password is invalid!', type: 'error' }));
                 }
             })
     }
@@ -89,7 +89,7 @@ const SignIn = () => {
                 console.error(errorMessage)
 
                 if (errorCode === "auth/invalid-credential") {
-                    dispatch(showAlert({ message: 'Email or password is invalid!', type: 'error', action: () => { } }));
+                    dispatch(showAlert({ message: 'Email or password is invalid!', type: 'error' }));
                 }
             })
     }
