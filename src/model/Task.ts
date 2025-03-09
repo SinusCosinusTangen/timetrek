@@ -9,6 +9,7 @@ interface Task {
     EndDateTime: Date;
     EndedTime: Date | null;
     NotifiedMembers: string[];
+    Position: number;
     CreatedAt: Date;
     UpdatedAt: Date;
 }

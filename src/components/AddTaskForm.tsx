@@ -69,6 +69,7 @@ const AddTaskForm: React.FC = () => {
             EndDateTime: new Date(endDateTime),
             EndedTime: null,
             NotifiedMembers: notifiedMember,
+            Position: Number.MAX_VALUE,
             CreatedAt: new Date(),
             UpdatedAt: new Date()
         }

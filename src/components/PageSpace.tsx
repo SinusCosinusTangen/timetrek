@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Page from "../model/Page";
 import Task from "../model/Task";
 import User from "../model/User";
-import { addStage, getPage, getStages, getTasksByPageId, getUserListById, updatePage } from "../service/PageService";
+import { addStage, getPage, getStages, getTasksByPageId, getUserListById, updatePage, deleteStage } from "../service/PageService";
 import TaskCard from "./TaskCard";
 import { useCookies } from "react-cookie";
 import AddTaskForm from "./AddTaskForm";
@@ -13,6 +13,7 @@ import { threeVertical } from "react-icons-kit/entypo/threeVertical";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Icon from "react-icons-kit";
 import { updateTask } from "../service/TaskService";
+import { showAlert } from "../redux/AlertSlice";
 
 interface PageSpaceProps {
     pageId: string;
@@ -188,8 +189,19 @@ const PageSpace: React.FC<PageSpaceProps> = ({ pageId, user, isMinimized }) => {
         }));
     };
 
-    const handleDeleteStage = (stageStep: number) => {
-
+    const handleDeleteStage = async (stageStep: number, stageName: string) => {
+        if (page.Id) {
+            await deleteStage(page.Id, stageStep).then(async (reason) => {
+                if (reason === "Success") {
+                    await handleGetStages();
+                    await handleGetTasks();
+                } else if (reason === "Stage is not empty") {
+                    dispatch(showAlert({ message: "Can't delete stage \"%s\", stage is not empty!".replace("%s", stageName), type: 'error' }));
+                } else {
+                    dispatch(showAlert({ message: "General Error, please contact to Administrator", type: 'error' }));
+                }
+            })
+        }
     }
 
     return (
@@ -297,7 +309,7 @@ const PageSpace: React.FC<PageSpaceProps> = ({ pageId, user, isMinimized }) => {
                                                     <button className="block px-4 py-2 w-full text-gray-800 rounded-t-lg hover:bg-gray-200">
                                                         Edit
                                                     </button>
-                                                    <button className="block px-4 py-2 w-full text-red-600 rounded-b-lg hover:bg-gray-200" onClick={() => handleDeleteStage(stage.Step)}>
+                                                    <button className="block px-4 py-2 w-full text-red-600 rounded-b-lg hover:bg-gray-200" onClick={() => handleDeleteStage(stage.Step, stage.Name)}>
                                                         Delete
                                                     </button>
                                                 </div>

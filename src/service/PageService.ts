@@ -1,4 +1,5 @@
 import { addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { getTasksByPageIdAndStage } from "./TaskService";
 import User from "../model/User"
 import { db } from "../config/Firebase";
 import { DBProps } from "../constant/Constant";
@@ -150,6 +151,7 @@ const getTasksByPageId = async (pageId: string) => {
                     EndDateTime: data.EndDateTime.toDate(),
                     EndedTime: data.EndedTime ? data.EndedTime.toDate() : null,
                     NotifiedMembers: data.NotifiedMembers,
+                    Position: data.Position,
                     CreatedAt: data.CreatedAt.toDate(),
                     UpdatedAt: data.UpdatedAt.toDate()
                 };
@@ -199,4 +201,40 @@ const getUserListById = async (userIds: string[]) => {
     }
 }
 
-export { addPage, getAllPages, getPage, getTasksByPageId, addStage, getStages, updatePage, getUserListById };
+const deleteStage = async (pageId: string, stageToDelete: number) => {
+    try {
+        const pageRef = doc(db, DBProps.Pages, pageId);
+        const pageSnap = await getDoc(pageRef);
+        const pageData = pageSnap.data();
+
+        const tasks: Task[] = await getTasksByPageIdAndStage(pageId, stageToDelete);
+
+        if (pageData && tasks) {
+            if (tasks.length == 0) {
+                var stages: Stage[] = pageData.Stages;
+                stages = stages.filter((stage) => stage.Step != stageToDelete);
+                stages = stages.sort((a, b) => a.Step - b.Step);
+
+                stages
+                    .filter((stage) => stage.Step > stageToDelete)
+                    .forEach((stage) => {
+                        stage.Step = stages.indexOf(stage) + 1
+                    })
+
+                await updateDoc(pageRef, {
+                    Stages: stages,
+                    TotalStage: pageData.TotalStage - 1
+                })
+                return "Success"
+            } else {
+                return "Stage is not empty";
+            }
+        }
+
+        return "General Error";
+    } catch (error) {
+        throw error;
+    }
+}
+
+export { addPage, getAllPages, getPage, getTasksByPageId, addStage, getStages, updatePage, getUserListById, deleteStage };
